@@ -95,8 +95,8 @@ mywp_get_environmentというメソッドを用いて環境変数を取得する
  */
 define( 'MY_WORDPRESS_ENVIRONMENT', mywp_get_environment( 'MY_WORDPRESS_ENVIRONMENT' ) ); 
 ```
-mywp-get-environmentメソッドは、パラメータにした環境変数の値を返す関数である。
 
+mywp-get-environmentメソッドは、パラメータにした環境変数の値を返す関数である。
 ```
 function mywp_get_environment( $name ) {
 
@@ -139,8 +139,8 @@ FORSE_SSL_ADMIN: 管理画面とログイン画面にSSL通信を要求するか
 SAVEQUERIES: 分析のためにデータベースクエリを配列に保存し表示させる(開発環境以外ではfalseにすること)
 
 ```
-define( 'WP_HOME',          my_wordpress_emvironment( 'WORDPRESS_URL' ) );
-define( 'WP_SITEURL',       my_wordpress_emvironment( 'WORDPRESS_URL' ) );
+define( 'WP_HOME',          mywp_get_environment( 'WORDPRESS_URL' ) );
+define( 'WP_SITEURL',       mywp_get_environment( 'WORDPRESS_URL' ) );
 define( 'FORCE_SSL_ADMIN',  false );
 define( 'SAVEQUERIES',      true );
 ```
