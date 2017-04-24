@@ -1,33 +1,45 @@
-version: "2"
+version: '2'
+ 
 services:
+  db:
+    image: mysql:5.7
+    container_name: "my-wordpress-db"
+    volumes:
+      - "$PWD/.docker/data/db:/var/lib/mysql"
+    ports:
+      - "6003:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    networks:
+      - my_wordpress_link
+ 
   wordpress:
-    image: wordpress:latest
+    depends_on:
+      - db
+    image: wordpress:wordpress-php7.1-apache
     container_name: "my-wordpress"
     volumes:
       - "$PWD:/var/www/html"
       - "$PWD/.docker/backup:/tmp/backup"
       - "$PWD/.docker/log:/tmp/log"
-    ports:
-      - "2000:80"
-    depends_on:
+    links:
       - db
+    ports:
+      - "1003:80"
+    restart: always
     environment:
-      WORDPRESS_DB_HOST: "db:3306"
+      # WordPress Environment
+      WORDPRESS_LOG_PATH: /tmp/log
+      WORDPRESS_BACKUP_PATH: /tmp/backup
+      WORDPRESS_URL: http://localhost:1003
+      MY_WORDPRESS_ENVIRONMENT: develop
     networks:
-      - flat_link
-    env_file: .env
-
-  db:
-    image: mysql:5.7
-    container_name: "my-wordpress-db"
-    volumes:
-      - "db-data:/var/lib/mysql"
-    networks:
-      - flat_link
-    env_file: .env
-
-volumes:
-  db-data:
-
+      - my_wordpress_link
+ 
 networks:
-  my-wordpress:
+  my_wordpress_link:
+    external: true
